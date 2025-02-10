@@ -1,4 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["sculpt"]
+members = ["sculpt", "sculpt-macros"]
 package.license = "MIT OR Apache-2.0"
+package.authors = ["dsgallups <dsgallups@protonmail.com>"]
+package.repository = "https://github.com/dsgallups/sculpt"

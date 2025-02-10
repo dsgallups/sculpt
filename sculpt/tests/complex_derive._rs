@@ -1,0 +1,21 @@
+use sculpt::XmlComp;
+
+#[derive(XmlComp)]
+#[xml(tag = "foob")]
+pub struct Foob {
+    #[xml(attribute)]
+    first: i32,
+    #[xml(attribute, name = "bazAttr")]
+    second: i32,
+    #[xml(child)]
+    bar: FoobChild,
+}
+
+#[derive(XmlComp)]
+pub struct FoobChild {
+    #[attribute(name = "val")]
+    value: bool,
+}
+
+#[test]
+fn derive_to_xml() {}

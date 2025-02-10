@@ -18,3 +18,4 @@ serde = ["dep:serde"]
 quick-xml = "0.37.2"
 serde = { version = "1.0.217", features = ["derive"], optional = true }
 thiserror = "2.0.11"
+sculpt-macros = { path = "../sculpt-macros" }

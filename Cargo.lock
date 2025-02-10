@@ -40,6 +40,7 @@ name = "sculpt"
 version = "0.0.1"
 dependencies = [
  "quick-xml",
+ "sculpt-macros",
  "serde",
  "thiserror",
 ]

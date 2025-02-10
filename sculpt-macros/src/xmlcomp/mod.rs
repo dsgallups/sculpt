@@ -2,8 +2,14 @@ use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use syn::{
     parse_macro_input, parse_quote, punctuated::Punctuated, Data, DeriveInput, GenericParam,
-    Generics, Ident, ImplGenerics, Meta, TypeGenerics, TypeParam, WhereClause,
+    Generics, Ident, ImplGenerics, LitStr, Meta, TypeGenerics, TypeParam, WhereClause,
 };
+
+mod r#struct;
+use r#struct::*;
+
+mod data;
+use data::*;
 
 #[inline]
 pub fn derive_xml_comp_inner(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -11,22 +17,14 @@ pub fn derive_xml_comp_inner(input: proc_macro::TokenStream) -> proc_macro::Toke
 
     let name = input.ident;
 
-    let element_name = match input
+    let struct_opts = match input
         .attrs
         .into_iter()
         .find(|attr| attr.path().is_ident("openxml"))
+        .map(|attr| attr.parse_args::<StructImpl>())
     {
-        Some(attr) => {
-            let Meta::List(list) = attr.meta else {
-                panic!("Not a list")
-            };
-
-            1
-        }
-        None => {
-            //todo
-            todo!()
-        }
+        Some(attr) => attr.unwrap(),
+        None => StructImpl::new(&name),
     };
 
     let (impl_generics, ty_generics, where_clause) = split_generics(input.generics);
@@ -35,7 +33,7 @@ pub fn derive_xml_comp_inner(input: proc_macro::TokenStream) -> proc_macro::Toke
 
     let expanded = quote! {
         impl #impl_generics sculpt::xml::XmlComp<__W> for #name #ty_generics #where_clause {
-            fn to_xml(&self, writer: &mut quick_xml::Writer<__W>) -> Result<(), sculpt::xml::XmlWriteError> {
+            fn to_xml(&self, __w: &mut quick_xml::Writer<__W>) -> Result<(), sculpt::xml::XmlWriteError> {
                 Ok(())
             }
         }

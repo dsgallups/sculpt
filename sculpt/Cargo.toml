@@ -10,5 +10,11 @@ documentation = "https://docs.rs/sculpt"
 readme = "README.md"
 keywords = ["parser"]
 
+[features]
+serde = ["dep:serde"]
+
 
 [dependencies]
+quick-xml = "0.37.2"
+serde = { version = "1.0.217", features = ["derive"], optional = true }
+thiserror = "2.0.11"
